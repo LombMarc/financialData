@@ -4,6 +4,7 @@ import os
 import time
 import datetime
 
+import pandas as pd
 
 api_key = os.getenv('FMP_KEY')
 
@@ -121,3 +122,26 @@ def news_(nk,tick):
         data = data.replace('null', 'None')
         data = eval(data)
         return data['articles']
+
+def Option(key,tick):
+        """return a list of dict containing data of ticker's vanilla options"""
+        td = datetime.datetime.today().strftime("%Y-%m-%d")
+        om = (datetime.datetime.today()+datetime.timedelta(days=90)).strftime("%Y-%m-%d")
+        URL = "https://eodhistoricaldata.com/api/options/"+str(tick)+"?api_token="+str(key)+"&from="+td+"&to="+om
+        data = urllib.request.urlopen(URL)
+        data = data.read().decode("utf-8")
+        data = data.replace('FALSE', 'False')
+        data = data.replace('TRUE', 'True')
+        data = data.replace('null', 'None')
+        data = eval(data)
+        opt = data['data']
+        df = pd.DataFrame()
+        for t in range(len(opt)):
+                for i in opt[t]['options']:
+                        for j in (opt[0]['options'][i]):
+                                j['date'] = opt[t]['expirationDate']
+                                df = pd.concat([df,pd.DataFrame(j,index=[0])],ignore_index=True)
+        df = df.drop(['contractName','updatedAt','contractSize','contractPeriod','currency','lastTradeDateTime'],axis=1)
+        for i in opt:
+                print(i['expirationDate'])
+        return df
