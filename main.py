@@ -1,13 +1,16 @@
 import os
 from Stock import Stock
-import pandas as pd
+import numpy as np
+from reader import *
 
-from reader import ticker_list,incomeStatement,balanceSheet,cashFlow,ratio,dividend,profile,price,news_,price_vol
 
-ak = os.getenv('FMP_KEY')
-nk = os.getenv('NEWS_KEY')
+ak = os.getenv('FMP_KEY')  #https://financialmodelingprep.com free api key
+nk = os.getenv('NEWS_KEY') #https://newsapi.org free api key plan
+opKey = os.getenv('EODKEY') #https://eodhistoricaldata.com premium api key plan (20$ for option data)
+
 if __name__=='__main__':
-    #tick_list = ticker_list(ak)
-    apl = Stock('AAPL')
-    #apl = profile(ak,'aapl')
-    print(apl)
+    '''tick_list = ticker_list(ak)
+    print(len(tick_list))'''
+    #apl = Stock('AAPL')
+    apl = Options('AAPL')
+    print(apl.loc['2022-05-13'])

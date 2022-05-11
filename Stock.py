@@ -1,8 +1,8 @@
 from reader import *
+from os import getenv
 import pandas as pd
 
-ak = os.getenv('FMP_KEY')
-nk = os.getenv('NEWS_KEY')
+ak = getenv('FMP_KEY')
 
 class Stock:
 

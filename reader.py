@@ -1,17 +1,9 @@
-import json
-import urllib.request
-import os
 import time
+import urllib.request
 import datetime
-
+import requests
+import yfinance as yf
 import pandas as pd
-
-api_key = os.getenv('FMP_KEY')
-
-class Stock:
-        def __init__(self,inpt):
-                self.inp = inpt
-
 
 
 def ticker_list(ak):
@@ -123,8 +115,8 @@ def news_(nk,tick):
         data = eval(data)
         return data['articles']
 
-def Option(key,tick):
-        """return a list of dict containing data of ticker's vanilla options"""
+def Option_EOD(key,tick):
+        """return a list of dict containing data of ticker's vanilla options (EOD require an additional payment plan of 20$ a month)"""
         td = datetime.datetime.today().strftime("%Y-%m-%d")
         om = (datetime.datetime.today()+datetime.timedelta(days=90)).strftime("%Y-%m-%d")
         URL = "https://eodhistoricaldata.com/api/options/"+str(tick)+"?api_token="+str(key)+"&from="+td+"&to="+om
@@ -145,3 +137,22 @@ def Option(key,tick):
         for i in opt:
                 print(i['expirationDate'])
         return df
+
+def Options(tick):
+        """Input a ticker to get a dataframe containing all the traded option data, the index is set to the expiration date,
+         so to retrive a subset of the dataframe  use the df.loc['date in format yyyy-mm-dd'] method."""
+        tik = yf.Ticker(tick)
+        expir = tik.options
+        options = []
+        for e in expir:
+                opt = tik.option_chain(e)
+                C = pd.DataFrame(opt.calls)
+                P = pd.DataFrame(opt.puts)
+                C['type'] = 'C'
+                P['type'] = 'P'
+                Opt = pd.concat([C,P])
+                Opt['expiration'] = e
+                Opt = Opt.set_index('expiration')
+                options.append(Opt)
+        option = pd.concat(options)
+        return option
