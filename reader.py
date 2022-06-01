@@ -94,13 +94,13 @@ def price(ak,tick,freq):
         data = eval(data)
         return data
 
-def price_vol(ak,tick):
+"""def price_vol(ak,tick):
         """ return historical price of the stock with differential data"""
         URL = " https://financialmodelingprep.com/api/v3/historical-price-full/" +str(tick) + "?apikey=" + str(ak)
         data = urllib.request.urlopen(URL)
         data = data.read().decode("utf-8")
         data = eval(data)
-        return data['historical']
+        return data['historical']"""
 
 def news_(nk,tick):
         """return news about the specified ticker"""
