@@ -71,10 +71,10 @@ class Stock:
         Price = Price.set_index('date')
         self.Price4hour = Price
 
-        Price = pd.DataFrame(price_vol(ak, self.ticker))
+"""        Price = pd.DataFrame(price_vol(ak, self.ticker))
         Price = Price.set_index('date')
         Price = Price.drop('label')
-        self.Price1day = Price
+        self.Price1day = Price """
 
     def HistDividen(self): # 1 request
         histDivd = pd.DataFrame(dividend(ak,self.ticker)['historical'],columns=['date','adjDividend','dividend'])
