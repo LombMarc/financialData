@@ -6,6 +6,7 @@ The project use three free api to gather all sort of financia data, you can requ
 - https://eodhistoricaldata.com (premium) for more option information
 
 For the free user, the option data are retrived through the yahoo financa library.
+Note that using the free api pricing there are limited number of request per day and the stock symbol acutally available are limited to the US stock market.
 
 ## How to use
 Plug your api key in the variable present in the main.py script or save them as environment variable. Now choose the stock and the data you want, go on the reader.py to verify the name of the function you want to use.
